@@ -215,6 +215,10 @@
                 <label for="bookmarkthreshold">[[admin/settings/post:unread.min-track-last]]</label>
                 <input id="bookmarkthreshold" type="text" class="form-control" value="5" data-field="bookmarkThreshold">
             </div>
+            <div class="form-group">
+                <label for="readinglistthreshold">[[admin/settings/post:unread.min-track-last]]</label>
+                <input id="readinglistthreshold" type="text" class="form-control" value="5" data-field="readinglistThreshold">
+            </div>
         </form>
     </div>
 </div>

@@ -107,6 +107,7 @@ module.exports = function (User) {
             `uid:${uid}:notifications:read`,
             `uid:${uid}:notifications:unread`,
             `uid:${uid}:bookmarks`,
+            `uid:${uid}:readinglists`,
             `uid:${uid}:tids_read`,
             `uid:${uid}:tids_unread`,
             `uid:${uid}:followed_tids`,
