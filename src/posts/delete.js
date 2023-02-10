@@ -75,6 +75,7 @@ module.exports = function (Posts) {
             deleteFromTopicUserNotification(postData),
             deleteFromCategoryRecentPosts(postData),
             deleteFromUsersBookmarks(pids),
+            deleteFromUsersReadinglists(pids),
             deleteFromUsersVotes(pids),
             deleteFromReplies(postData),
             deleteFromGroups(pids),
@@ -151,16 +152,16 @@ module.exports = function (Posts) {
         await Promise.all(uniqCids.map(categories.updateRecentTidForCid));
     }
 
-    async function deleteFromUsersBookmarks(pids) {
-        const arrayOfUids = await db.getSetsMembers(pids.map(pid => `pid:${pid}:users_bookmarked`));
+    async function deleteFromUsersReadinglists(pids) {
+        const arrayOfUids = await db.getSetsMembers(pids.map(pid => `pid:${pid}:users_readinglisted`));
         const bulkRemove = [];
         pids.forEach((pid, index) => {
             arrayOfUids[index].forEach((uid) => {
-                bulkRemove.push([`uid:${uid}:bookmarks`, pid]);
+                bulkRemove.push([`uid:${uid}:readinglists`, pid]);
             });
         });
         await db.sortedSetRemoveBulk(bulkRemove);
-        await db.deleteAll(pids.map(pid => `pid:${pid}:users_bookmarked`));
+        await db.deleteAll(pids.map(pid => `pid:${pid}:users_readinglisted`));
     }
 
     async function deleteFromUsersVotes(pids) {
