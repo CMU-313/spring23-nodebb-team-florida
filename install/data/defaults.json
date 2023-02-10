@@ -75,6 +75,7 @@
     "allowPrivateGroups": 1,
     "unreadCutoff": 2,
     "bookmarkThreshold": 5,
+    "readinglistThreshold": 5,
     "autoDetectLang": 1,
     "reputation:disabled": 0,
     "downvote:disabled": 0,
