@@ -41,6 +41,7 @@
 
                 <!-- IF !topics.noAnchor -->
                 <a href="{config.relative_path}/topic/{topics.slug}<!-- IF topics.bookmark -->/{topics.bookmark}<!-- ENDIF topics.bookmark -->">{topics.title}</a><br />
+                <a href="{config.relative_path}/topic/{topics.slug}<!-- IF topics.readinglist -->/{topics.readinglist}<!-- ENDIF topics.readinglist -->">{topics.title}</a><br />
                 <!-- ELSE -->
                 <span>{topics.title}</span><br />
                 <!-- ENDIF !topics.noAnchor -->

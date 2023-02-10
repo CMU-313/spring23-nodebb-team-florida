@@ -148,6 +148,14 @@
 		margin-left: 5px;
 	}
 
+	.readinglisted {
+		font-size: 16px;
+		color: darken(@post-highlight, 20%);
+		opacity: 0;
+		.transition(0.75s ease-in-out opacity);
+		margin-left: 5px;
+	}
+
 	[component="post/anchor"] {
 		position: relative;
 		top: -@post-padding;
@@ -449,6 +457,10 @@
 				box-shadow: 0px 2px 2px -2px @post-highlight;
 
 				.bookmarked {
+					opacity: 1;
+				}
+
+				.readinglisted {
 					opacity: 1;
 				}
 			}
