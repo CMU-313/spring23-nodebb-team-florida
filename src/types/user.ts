@@ -93,6 +93,7 @@ export type Counts = {
   best: number;
   blocks: number;
   bookmarks: number;
+  readinglists: number;
   categoriesWatched: number;
   downvoted: number;
   followers: number;
