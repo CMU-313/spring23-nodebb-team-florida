@@ -31,6 +31,9 @@ define('components', function () {
         'post/bookmark-count': function (pid) {
             return $('[component="post"][data-pid="' + pid + '"] [component="post/bookmark-count"]');
         },
+        'post/readinglist-count': function (pid) {
+            return $('[component="post"][data-pid="' + pid + '"] [component="post/readinglist-count"]');
+        },
 
         'user/postcount': function (uid) {
             return $('[component="user/postcount"][data-uid="' + uid + '"]');
