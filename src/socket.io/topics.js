@@ -40,6 +40,16 @@ SocketTopics.bookmark = async function (socket, data) {
     }
 };
 
+SocketTopics.readinglist = async function (socket, data) {
+    if (!socket.uid || !data) {
+        throw new Error('[[error:invalid-data]]');
+    }
+    const postcount = await topics.getTopicField(data.tid, 'postcount');
+    if (data.index > meta.config.readinglistThreshold && postcount > meta.config.readinglistThreshold) {
+        await topics.setUserReadinglist(data.tid, socket.uid, data.index);
+    }
+};
+
 SocketTopics.createTopicFromPosts = async function (socket, data) {
     if (!socket.uid) {
         throw new Error('[[error:not-logged-in]]');

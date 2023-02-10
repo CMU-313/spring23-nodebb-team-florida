@@ -52,6 +52,7 @@ module.exports = function (Topics) {
 
         const tid = await Topics.create(result.params);
         await Topics.updateTopicBookmarks(fromTid, pids);
+        await Topics.updateTopicReadinglists(fromTid, pids);
 
         for (const pid of pids) {
             /* eslint-disable no-await-in-loop */

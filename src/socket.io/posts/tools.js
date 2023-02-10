@@ -19,7 +19,7 @@ module.exports = function (SocketPosts) {
         }
 
         const results = await utils.promiseParallel({
-            posts: posts.getPostFields(data.pid, ['deleted', 'bookmarks', 'uid', 'ip', 'flagId']),
+            posts: posts.getPostFields(data.pid, ['deleted', 'bookmarks', 'readinglists', 'uid', 'ip', 'flagId']),
             isAdmin: user.isAdministrator(socket.uid),
             isGlobalMod: user.isGlobalModerator(socket.uid),
             isModerator: user.isModerator(socket.uid, data.cid),
@@ -29,6 +29,7 @@ module.exports = function (SocketPosts) {
             canFlag: privileges.posts.canFlag(data.pid, socket.uid),
             flagged: flags.exists('post', data.pid, socket.uid), // specifically, whether THIS calling user flagged
             bookmarked: posts.hasBookmarked(data.pid, socket.uid),
+            readinglisted: posts.hasReadinglisted(data.pid, socket.uid),
             postSharing: social.getActivePostSharing(),
             history: posts.diffs.exists(data.pid),
             canViewInfo: privileges.global.can('view:users:info', socket.uid),
@@ -37,6 +38,7 @@ module.exports = function (SocketPosts) {
         const postData = results.posts;
         postData.absolute_url = `${nconf.get('url')}/post/${data.pid}`;
         postData.bookmarked = results.bookmarked;
+        postData.readinglisted = results.readinglisted;
         postData.selfPost = socket.uid && socket.uid === postData.uid;
         postData.display_edit_tools = results.canEdit.flag;
         postData.display_delete_tools = results.canDelete.flag;
