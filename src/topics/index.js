@@ -117,11 +117,12 @@ Topics.getTopicsByTids = async function (tids, options) {
         };
     }
 
-    const [result, hasRead, isIgnored, bookmarks, callerSettings] = await Promise.all([
+    const [result, hasRead, isIgnored, bookmarks, readinglists, callerSettings] = await Promise.all([
         loadTopics(),
         Topics.hasReadTopics(tids, uid),
         Topics.isIgnoring(tids, uid),
         Topics.getUserBookmarks(tids, uid),
+        Topics.getUserReadinglists(tids, uid),
         user.getSettings(uid),
     ]);
 
@@ -142,6 +143,9 @@ Topics.getTopicsByTids = async function (tids, options) {
             topic.bookmark = sortNewToOld ?
                 Math.max(1, topic.postcount + 2 - bookmarks[i]) :
                 Math.min(topic.postcount, bookmarks[i] + 1);
+            topic.readinglist = sortNewToOld ?
+                Math.max(1, topic.postcount + 2 - readinglists[i]) :
+                Math.min(topic.postcount, readinglists[i] + 1);
             topic.unreplied = !topic.teaser;
 
             topic.icons = [];
@@ -162,6 +166,7 @@ Topics.getTopicWithPosts = async function (topicData, set, uid, start, stop, rev
         threadTools,
         followData,
         bookmark,
+        readinglist,
         postSharing,
         deleter,
         merger,
@@ -175,6 +180,7 @@ Topics.getTopicWithPosts = async function (topicData, set, uid, start, stop, rev
         plugins.hooks.fire('filter:topic.thread_tools', { topic: topicData, uid: uid, tools: [] }),
         Topics.getFollowData([topicData.tid], uid),
         Topics.getUserBookmark(topicData.tid, uid),
+        Topics.getUserReadinglists(topicData.tid, uid),
         social.getActivePostSharing(),
         getDeleter(topicData),
         getMerger(topicData),
@@ -201,6 +207,7 @@ Topics.getTopicWithPosts = async function (topicData, set, uid, start, stop, rev
     topicData.isNotFollowing = !followData[0].following && !followData[0].ignoring;
     topicData.isIgnoring = followData[0].ignoring;
     topicData.bookmark = bookmark;
+    topicData.readinglist = readinglist;
     topicData.postSharing = postSharing;
     topicData.deleter = deleter;
     if (deleter) {
