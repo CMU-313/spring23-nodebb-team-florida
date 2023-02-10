@@ -18,6 +18,7 @@ define('forum/topic/events', [
         'event:user_status_change': onUserStatusChange,
         'event:voted': updatePostVotesAndUserReputation,
         'event:bookmarked': updateBookmarkCount,
+        'event:readinglisted': updateReadinglistCount,
 
         'event:topic_deleted': threadTools.setDeleteState,
         'event:topic_restored': threadTools.setDeleteState,
@@ -38,7 +39,9 @@ define('forum/topic/events', [
         'event:post_restored': togglePostDeleteState,
 
         'posts.bookmark': togglePostBookmark,
+        'posts.readinglist': togglePostReadinglist,
         'posts.unbookmark': togglePostBookmark,
+        'posts.unreadinglist': togglePostReadinglist,
 
         'posts.upvote': togglePostVote,
         'posts.downvote': togglePostVote,
@@ -82,6 +85,12 @@ define('forum/topic/events', [
         $('[data-pid="' + data.post.pid + '"] .bookmarkCount').filter(function (index, el) {
             return parseInt($(el).closest('[data-pid]').attr('data-pid'), 10) === parseInt(data.post.pid, 10);
         }).html(data.post.bookmarks).attr('data-bookmarks', data.post.bookmarks);
+    }
+
+    function updateReadinglistCount(data) {
+        $('[data-pid="' + data.post.pid + '"] .readinglistCount').filter(function (index, el) {
+            return parseInt($(el).closest('[data-pid]').attr('data-pid'), 10) === parseInt(data.post.pid, 10);
+        }).html(data.post.readinglists).attr('data-readinglists', data.post.readinglists);
     }
 
     function onTopicPurged(data) {
@@ -219,6 +228,20 @@ define('forum/topic/events', [
 
         el.find('[component="post/bookmark/on"]').toggleClass('hidden', !data.isBookmarked);
         el.find('[component="post/bookmark/off"]').toggleClass('hidden', data.isBookmarked);
+    }
+
+    function togglePostReadinglist(data) {
+        const el = $('[data-pid="' + data.post.pid + '"] [component="post/readinglist"]').filter(function (index, el) {
+            return parseInt($(el).closest('[data-pid]').attr('data-pid'), 10) === parseInt(data.post.pid, 10);
+        });
+        if (!el.length) {
+            return;
+        }
+
+        el.attr('data-readinglisted', data.isReadinglisted);
+
+        el.find('[component="post/readinglist/on"]').toggleClass('hidden', !data.isReadinglisted);
+        el.find('[component="post/readinglist/off"]').toggleClass('hidden', data.isReadinglisted);
     }
 
     function togglePostVote(data) {
