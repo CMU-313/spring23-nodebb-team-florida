@@ -83,6 +83,16 @@
             <span component="post/bookmark-count" class="bookmarkCount badge" data-bookmarks="{posts.bookmarks}">{posts.bookmarks}</span>&nbsp;
         </a>
     </li>
+    <li>
+        <a component="post/readinglist" role="menuitem" tabindex="-1" href="#" data-readinglisted="{posts.readinglisted}">
+            <span class="menu-icon">
+                <i component="post/readinglist/on" class="fa fa-fw fa-heart <!-- IF !posts.readinglisted -->hidden<!-- ENDIF !posts.readinglisted -->"></i>
+                <i component="post/readinglist/off" class="fa fa-fw fa-heart-o <!-- IF posts.readinglisted -->hidden<!-- ENDIF posts.readinglisted -->"></i>
+            </span>
+            <span class="readinglist-text">[[topic:readinglist]]</span>
+            <span component="post/readinglist-count" class="readinglistCount badge" data-readinglists="{posts.readinglists}">{posts.readinglists}</span>&nbsp;
+        </a>
+    </li>
     {{{ end }}}
 
     <li>

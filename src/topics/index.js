@@ -32,7 +32,7 @@ require('./suggested')(Topics);
 require('./tools')(Topics);
 Topics.thumbs = require('./thumbs');
 require('./bookmarks')(Topics);
-require('./readinglist')(Topics);
+require('./readinglists')(Topics);
 require('./merge')(Topics);
 Topics.events = require('./events');
 
