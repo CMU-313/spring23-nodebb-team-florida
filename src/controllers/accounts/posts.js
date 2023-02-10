@@ -23,6 +23,14 @@ const templateToData = {
             return `uid:${userData.uid}:bookmarks`;
         },
     },
+    'account/readinglists': {
+        type: 'posts',
+        noItemsFoundKey: '[[topic:readinglists.has_no_readinglists]]',
+        crumb: '[[user:readinglists]]',
+        getSets: function (callerUid, userData) {
+            return `uid:${userData.uid}:readinglists`;
+        },
+    },
     'account/posts': {
         type: 'posts',
         noItemsFoundKey: '[[user:has_no_posts]]',
@@ -140,6 +148,10 @@ const templateToData = {
 
 postsController.getBookmarks = async function (req, res, next) {
     await getPostsFromUserSet('account/bookmarks', req, res, next);
+};
+
+postsController.getReadinglists = async function (req, res, next) {
+    await getPostsFromUserSet('account/readinglists', req, res, next);
 };
 
 postsController.getPosts = async function (req, res, next) {
