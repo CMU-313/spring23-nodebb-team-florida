@@ -30,6 +30,7 @@ define('forum/topic', [
             navigator.disable();
             components.get('navbar/title').find('span').text('').hide();
             alerts.remove('bookmark');
+            alerts.remove('readinglist');
         }
     });
 
@@ -64,6 +65,7 @@ define('forum/topic', [
         addPostsPreviewHandler();
 
         handleBookmark(tid);
+        handleReadinglist(tid);
 
         $(window).on('scroll', utils.debounce(updateTopicTitle, 250));
 
@@ -154,6 +156,42 @@ define('forum/topic', [
             });
             setTimeout(function () {
                 alerts.remove('bookmark');
+            }, 10000);
+        }
+    }
+
+    function handleReadinglist(tid) {
+        if (window.location.hash) {
+            const el = $(utils.escapeHTML(window.location.hash));
+            if (el.length) {
+                return navigator.scrollToElement(el, true, 0);
+            }
+        }
+        const readinglist = ajaxify.data.readinglist || storage.getItem('topic:' + tid + ':readinglist');
+        const postIndex = ajaxify.data.postIndex;
+
+        if (postIndex > 1) {
+            if (components.get('post/anchor', postIndex - 1).length) {
+                return navigator.scrollToPostIndex(postIndex - 1, true, 0);
+            }
+        } else if (readinglist && (
+            !config.usePagination ||
+            (config.usePagination && ajaxify.data.pagination.currentPage === 1)
+        ) && ajaxify.data.postcount > ajaxify.data.readinglistThreshold) {
+            alerts.alert({
+                alert_id: 'readinglist',
+                message: '[[topic:readinglist_instructions]]',
+                timeout: 0,
+                type: 'info',
+                clickfn: function () {
+                    navigator.scrollToIndex(parseInt(readinglist, 10), true);
+                },
+                closefn: function () {
+                    storage.removeItem('topic:' + tid + ':readinglist');
+                },
+            });
+            setTimeout(function () {
+                alerts.remove('readinglist');
             }, 10000);
         }
     }
@@ -291,6 +329,7 @@ define('forum/topic', [
         }
         if ($(window).scrollTop() > 300) {
             alerts.remove('bookmark');
+            alerts.remove('readinglist');
         }
     }
 
@@ -308,6 +347,7 @@ define('forum/topic', [
             }
 
             updateUserBookmark(index);
+            updateUserReadinglist(index);
 
             Topic.replaceURLTimeout = 0;
             if (ajaxify.data.updateUrlWithPostIndex && history.replaceState) {
@@ -356,6 +396,42 @@ define('forum/topic', [
         // removes the bookmark alert when we get to / past the bookmark
         if (!currentBookmark || parseInt(index, 10) >= parseInt(currentBookmark, 10)) {
             alerts.remove('bookmark');
+        }
+    }
+
+    function updateUserReadinglist(index) {
+        const readinglistKey = 'topic:' + ajaxify.data.tid + ':readinglist';
+        const currentReadinglist = ajaxify.data.readinglist || storage.getItem(readinglistKey);
+        if (config.topicPostSort === 'newest_to_oldest') {
+            index = Math.max(1, ajaxify.data.postcount - index + 2);
+        }
+
+        if (
+            ajaxify.data.postcount > ajaxify.data.readinglistThreshold &&
+            (
+                !currentReadinglist ||
+                parseInt(index, 10) > parseInt(currentReadinglist, 10) ||
+                ajaxify.data.postcount < parseInt(currentReadinglist, 10)
+            )
+        ) {
+            if (app.user.uid) {
+                socket.emit('topics.readinglist', {
+                    tid: ajaxify.data.tid,
+                    index: index,
+                }, function (err) {
+                    if (err) {
+                        return alerts.error(err);
+                    }
+                    ajaxify.data.readinglist = index + 1;
+                });
+            } else {
+                storage.setItem(readinglistKey, index);
+            }
+        }
+
+        // removes the bookmark alert when we get to / past the bookmark
+        if (!currentReadinglist || parseInt(index, 10) >= parseInt(currentReadinglist, 10)) {
+            alerts.remove('readinglist');
         }
     }
 
