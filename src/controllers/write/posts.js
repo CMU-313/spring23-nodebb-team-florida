@@ -83,6 +83,18 @@ Posts.unbookmark = async (req, res) => {
     helpers.formatApiResponse(200, res);
 };
 
+Posts.readinglist = async (req, res) => {
+    const data = await mock(req);
+    await api.posts.readinglist(req, data);
+    helpers.formatApiResponse(200, res);
+};
+
+Posts.unreadinglist = async (req, res) => {
+    const data = await mock(req);
+    await api.posts.unreadinglist(req, data);
+    helpers.formatApiResponse(200, res);
+};
+
 Posts.getDiffs = async (req, res) => {
     helpers.formatApiResponse(200, res, await api.posts.getDiffs(req, { ...req.params }));
 };
