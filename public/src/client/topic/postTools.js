@@ -90,6 +90,10 @@ define('forum/topic/postTools', [
 
         handleSelectionTooltip();
 
+        postContainer.on('click', '[component="post/endorse"]', function () {
+            onEndorseClicked($(this), tid);
+        });
+
         postContainer.on('click', '[component="post/quote"]', function () {
             onQuoteClicked($(this), tid);
         });
@@ -254,7 +258,34 @@ define('forum/topic/postTools', [
             openChat($(this));
         });
     }
+    async function onEndorseClicked(button, tid) {
+        const selectedNode = await getSelectedNode();
+        showStaleWarning(async function () {
+            const username = await getUserSlug(button);
+            const toPid = getData(button, 'data-pid');
 
+            function endorse(text) {
+                hooks.fire('action:endorsement.addEndorsement', {
+                    tid: tid,
+                    pid: toPid,
+                    username: username,
+                    topicName: ajaxify.data.titleRaw,
+                    text: text,
+                  });
+                }
+      
+                if (selectedNode.text && toPid && toPid === selectedNode.pid) {
+                  return endorse(selectedNode.text);
+                }
+                socket.emit('posts.getRawPost', toPid, function (err, post) {
+                  if (err) {
+                    return alerts.error(err);
+                  }
+      
+                  endorse(post);
+                });
+              });
+            }
     async function onReplyClicked(button, tid) {
         const selectedNode = await getSelectedNode();
 
