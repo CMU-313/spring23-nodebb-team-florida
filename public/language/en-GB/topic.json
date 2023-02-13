@@ -55,6 +55,7 @@
 	"forked-by": "Forked by",
 
 	"bookmark_instructions" : "Click here to return to the last read post in this thread.",
+	"readinglist_instructions" : "Click here to return to the last read post in this thread.",
 
 	"flag-post": "Flag this post",
 	"flag-user": "Flag this user",
@@ -130,6 +131,10 @@
 	"bookmark": "Bookmark",
 	"bookmarks": "Bookmarks",
 	"bookmarks.has_no_bookmarks": "You haven't bookmarked any posts yet.",
+
+	"readinglist": "Readinglist",
+	"readinglists": "Readinglists",
+	"readinglists.has_no_readinglists": "You haven't readinglisted any posts yet.",
 
 	"copy-permalink": "Copy Permalink",
 

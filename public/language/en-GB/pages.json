@@ -54,6 +54,7 @@
 	"account/groups": "%1's Groups",
 	"account/watched_categories": "%1's Watched Categories",
 	"account/bookmarks": "%1's Bookmarked Posts",
+	"account/readinglists": "%1's Readinglisted Posts",
 	"account/settings": "User Settings",
 	"account/watched": "Topics watched by %1",
 	"account/ignored": "Topics ignored by %1",
