@@ -1,3 +1,5 @@
+/* eslint-disable */
+// this file is not being used for our implementation
 'use strict';
 
 const db = require('../../database');
