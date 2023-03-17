@@ -1,4 +1,5 @@
 /* eslint-disable */
+// this file just used to demonstrate one use case of iroh
 const Iroh = require('iroh');
 
 let code = `
