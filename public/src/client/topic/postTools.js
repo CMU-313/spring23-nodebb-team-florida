@@ -271,21 +271,21 @@ define('forum/topic/postTools', [
                     username: username,
                     topicName: ajaxify.data.titleRaw,
                     text: text,
-                  });
-                }
-      
-                if (selectedNode.text && toPid && toPid === selectedNode.pid) {
-                  return endorse(selectedNode.text);
-                }
-                socket.emit('posts.getRawPost', toPid, function (err, post) {
-                  if (err) {
-                    return alerts.error(err);
-                  }
-      
-                  endorse(post);
                 });
-              });
             }
+
+            if (selectedNode.text && toPid && toPid === selectedNode.pid) {
+                return endorse(selectedNode.text);
+            }
+            socket.emit('posts.getRawPost', toPid, function (err, post) {
+                if (err) {
+                    return alerts.error(err);
+                }
+
+                endorse(post);
+            });
+        });
+    }
     async function onReplyClicked(button, tid) {
         const selectedNode = await getSelectedNode();
 
