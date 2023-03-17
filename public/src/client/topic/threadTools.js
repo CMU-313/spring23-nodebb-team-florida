@@ -114,7 +114,6 @@ define('forum/topic/threadTools', [
             return false;
         });
 
-
         topicContainer.on('click', '[component="topic/move"]', function () {
             require(['forum/topic/move'], function (move) {
                 move.init([tid], ajaxify.data.cid);
