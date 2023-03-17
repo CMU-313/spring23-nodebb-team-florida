@@ -302,6 +302,22 @@ describe('Post\'s', () => {
         });
     });
 
+    describe('endorsing', () => {
+        it('should endorse a post', async () => {
+            const data = await apiPosts.endorse({ uid: voterUid }, { pid: postData.pid, room_id: `topic_${postData.tid}` });
+            assert.equal(data.isEndorsed, true);
+            const hasEndorsed = await posts.hasEndorsed(postData.pid, voterUid);
+            assert.equal(hasEndorsed, true);
+        });
+
+        it('should unendorse a post', async () => {
+            const data = await apiPosts.unendorse({ uid: voterUid }, { pid: postData.pid, room_id: `topic_${postData.tid}` });
+            assert.equal(data.isEndorsed, false);
+            const hasEndorsed = await posts.hasEndorsed([postData.pid], voterUid);
+            assert.equal(hasEndorsed, false);
+        });
+    });
+
     describe('post tools', () => {
         it('should error if data is invalid', (done) => {
             socketPosts.loadPostTools({ uid: globalModUid }, null, (err) => {
@@ -539,6 +555,7 @@ describe('Post\'s', () => {
             assert.strictEqual(data.topic.tags[0].value, 'edited');
             const res = await db.getObject(`post:${pid}`);
             assert(!res.hasOwnProperty('bookmarks'));
+            assert(!res.hasOwnProperty('endorses'));
         });
 
         it('should disallow post editing for new users if post was made past the threshold for editing', async () => {
@@ -960,6 +977,7 @@ describe('Post\'s', () => {
             assert.equal(err.message, '[[error:no-user]]');
             done();
         });
+        done();
     });
 
     describe('post queue', () => {
@@ -1243,3 +1261,4 @@ describe('Posts\'', async () => {
         });
     });
 });
+
