@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Plato - src/user/posts.js</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
+  <link href="../../assets/css/plato.css" rel="stylesheet">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="http://github.com/es-analysis/plato">Plato on Github</a>
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="../../index.html">Report Home</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>src/user/posts.js</h1>
+  </div>
+</div>
+
+<div class="container aggregate-stats">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"  data-container="body"></i></a></h2>
+      <p class="stat">74.03</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC" data-container="body"></i></h2>
+      <p class="stat">223</p>
+    </div>
+  </div>
+  <div class="row historical">
+    <div class="col-md-6">
+      <p id="chart_historical_maint" class="chart"></p>
+    </div>
+    <div class="col-md-6">
+      <p id="chart_historical_sloc" class="chart"></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty" data-container="body"></i></a></h2>
+      <p class="stat">59.23</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs" data-container="body"></i></a></h2>
+      <p class="stat">2.18</p>
+    </div>
+  </div>
+</div>
+
+<div class="container charts">
+  <div class="row">
+    <h2 class="header">Function weight</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity" data-container="body"></i></a></h3>
+      <div id="fn-by-complexity" class="stat"></div>
+    </div>
+    <div class="col-md-6">
+      <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC" data-container="body"></i></h3>
+      <div id="fn-by-sloc" class="stat"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <textarea id="file-source" class="col-md-12">&quot;use strict&quot;;
+// Referenced @cmay20’s TypeScript translation from P1: https://github.com/CMU-313/NodeBB/pull/163/files
+var __awaiter = (this &amp;&amp; this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator[&quot;throw&quot;](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __importDefault = (this &amp;&amp; this.__importDefault) || function (mod) {
+    return (mod &amp;&amp; mod.__esModule) ? mod : { &quot;default&quot;: mod };
+};
+const database_1 = __importDefault(require(&quot;../database&quot;));
+const meta_1 = __importDefault(require(&quot;../meta&quot;));
+const privileges_1 = __importDefault(require(&quot;../privileges&quot;));
+module.exports = function (User) {
+    function isReady(uid, cid, field) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (parseInt(uid, 10) === 0) {
+                return;
+            }
+            const [userData, isAdminOrMod] = yield Promise.all([
+                // The next line calls a function in a module that has not been updated to TS yet
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+                User.getUserFields(uid, [&#039;uid&#039;, &#039;mutedUntil&#039;, &#039;joindate&#039;, &#039;email&#039;, &#039;reputation&#039;].concat([field])),
+                privileges_1.default.categories.isAdminOrMod(cid, uid),
+            ]);
+            // The next line calls a function in a module that has not been updated to TS yet
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+            if (!userData.uid) {
+                throw new Error(&#039;[[error:no-user]]&#039;);
+            }
+            if (isAdminOrMod) {
+                return;
+            }
+            const now = Date.now();
+            // The next line calls a function in a module that has not been updated to TS yet
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+            if (userData.mutedUntil &gt; now) {
+                // The next line calls a function in a module that has not been updated to TS yet
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+                let muteLeft = ((userData.mutedUntil - now) / (1000 * 60));
+                if (muteLeft &gt; 60) {
+                    muteLeft = +(muteLeft / 60).toFixed(0);
+                    throw new Error(`[[error:user-muted-for-hours, ${muteLeft}]]`);
+                }
+                else {
+                    throw new Error(`[[error:user-muted-for-minutes, ${+muteLeft.toFixed(0)}]]`);
+                }
+            }
+            // The next line calls a function in a module that has not been updated to TS yet
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+            const initialpostdelay = meta_1.default.config.initialPostDelay;
+            // The next line calls a function in a module that has not been updated to TS yet
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+            if (now - userData.joindate &lt; meta_1.default.config.initialPostDelay * 1000) {
+                // The next line calls a function in a module that has not been updated to TS yet
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+                throw new Error(`[[error:user-too-new, ${initialpostdelay}]]`);
+            }
+            // The next line calls a function in a module that has not been updated to TS yet
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+            const lasttime = userData[field] || 0;
+            // The next line calls a function in a module that has not been updated to TS yet
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+            const newbiepostdelay = meta_1.default.config.newbiePostDelay;
+            // The next line calls a function in a module that has not been updated to TS yet
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+            const newbiepostdelaythreshold = meta_1.default.config.newbiePostDelayThreshold;
+            // The next line calls a function in a module that has not been updated to TS yet
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+            const postdelay = meta_1.default.config.postDelay;
+            if (
+            // The next line calls a function in a module that has not been updated to TS yet
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+            meta_1.default.config.newbiePostDelay &gt; 0 &amp;&amp;
+                // The next line calls a function in a module that has not been updated to TS yet
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+                meta_1.default.config.newbiePostDelayThreshold &gt; userData.reputation &amp;&amp;
+                // The next line calls a function in a module that has not been updated to TS yet
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+                now - lasttime &lt; meta_1.default.config.newbiePostDelay * 1000) {
+                // The next line calls a function in a module that has not been updated to TS yet
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+                throw new Error(`[[error:too-many-posts-newbie, ${newbiepostdelay}, ${newbiepostdelaythreshold}]]`);
+                // The next line calls a function in a module that has not been updated to TS yet
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+            }
+            else if (now - lasttime &lt; meta_1.default.config.postDelay * 1000) {
+                // The next line calls a function in a module that has not been updated to TS yet
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+                throw new Error(`[[error:too-many-posts, ${postdelay}]]`);
+            }
+        });
+    }
+    // The next line calls a function in a module that has not been updated to TS yet
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    User.isReadyToPost = function (uid, cid) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield isReady(uid, cid, &#039;lastposttime&#039;);
+        });
+    };
+    // The next line calls a function in a module that has not been updated to TS yet
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    User.isReadyToQueue = function (uid, cid) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield isReady(uid, cid, &#039;lastqueuetime&#039;);
+        });
+    };
+    // The next line calls a function in a module that has not been updated to TS yet
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    User.onNewPostMade = function (postData) {
+        return __awaiter(this, void 0, void 0, function* () {
+            // For scheduled posts, use &quot;action&quot; time. It&#039;ll be updated in related cron job when post is published
+            const lastposttime = postData.timestamp &gt; Date.now() ? Date.now() : postData.timestamp;
+            yield Promise.all([
+                // The next line calls a function in a module that has not been updated to TS yet
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+                User.addPostIdToUser(postData),
+                // The next line calls a function in a module that has not been updated to TS yet
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+                User.setUserField(postData.uid, &#039;lastposttime&#039;, lastposttime),
+                // The next line calls a function in a module that has not been updated to TS yet
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+                User.updateLastOnlineTime(postData.uid),
+            ]);
+        });
+    };
+    // The next line calls a function in a module that has not been updated to TS yet
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    User.addPostIdToUser = function (postData) {
+        return __awaiter(this, void 0, void 0, function* () {
+            // The next line calls a function in a module that has not been updated to TS yet
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+            yield database_1.default.sortedSetsAdd([
+                `uid:${postData.uid}:posts`,
+                `cid:${postData.cid}:uid:${postData.uid}:pids`,
+            ], postData.timestamp, postData.pid);
+            // The next line calls a function in a module that has not been updated to TS yet
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+            yield User.updatePostCount(postData.uid);
+        });
+    };
+    // The next line calls a function in a module that has not been updated to TS yet
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    User.updatePostCount = (uids) =&gt; __awaiter(this, void 0, void 0, function* () {
+        uids = Array.isArray(uids) ? uids : [uids];
+        // The next line calls a function in a module that has not been updated to TS yet
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+        const exists = yield User.exists(uids);
+        // The next line calls a function in a module that has not been updated to TS yet
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+        uids = uids.filter((uid, index) =&gt; exists[index]);
+        // The next line calls a function in a module that has not been updated to TS yet
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        if (uids.length) {
+            // The next line calls a function in a module that has not been updated to TS yet
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+            const counts = yield database_1.default.sortedSetsCard(uids.map(uid =&gt; `uid:${uid}:posts`));
+            yield Promise.all([
+                // The next line calls a function in a module that has not been updated to TS yet
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-call
+                database_1.default.setObjectBulk(uids.map((uid, index) =&gt; ([`user:${uid}`, { postcount: counts[index] }]))),
+                // The next line calls a function in a module that has not been updated to TS yet
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-call
+                database_1.default.sortedSetAdd(&#039;users:postcount&#039;, counts, uids),
+            ]);
+        }
+    });
+    function incrementUserFieldAndSetBy(uid, field, set, valueStr) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const value = parseInt(valueStr, 10);
+            if (!value || !field || !(parseInt(uid, 10) &gt; 0)) {
+                return;
+            }
+            // The next line calls a function in a module that has not been updated to TS yet
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+            const exists = yield User.exists(uid);
+            if (!exists) {
+                return;
+            }
+            // The next line calls a function in a module that has not been updated to TS yet
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+            const newValue = yield User.incrementUserFieldBy(uid, field, value);
+            // The next line calls a function in a module that has not been updated to TS yet
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+            yield database_1.default.sortedSetAdd(set, newValue, uid);
+            return newValue;
+        });
+    }
+    // The next line calls a function in a module that has not been updated to TS yet
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    User.incrementUserPostCountBy = function (uid, value) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield incrementUserFieldAndSetBy(uid, &#039;postcount&#039;, &#039;users:postcount&#039;, value);
+        });
+    };
+    // The next line calls a function in a module that has not been updated to TS yet
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    User.incrementUserReputationBy = function (uid, value) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield incrementUserFieldAndSetBy(uid, &#039;reputation&#039;, &#039;users:reputation&#039;, value);
+        });
+    };
+    // The next line calls a function in a module that has not been updated to TS yet
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    User.incrementUserFlagsBy = function (uid, value) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield incrementUserFieldAndSetBy(uid, &#039;flags&#039;, &#039;users:flags&#039;, value);
+        });
+    };
+    // The next line calls a function in a module that has not been updated to TS yet
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    User.getPostIds = function (uid, start, stop) {
+        return __awaiter(this, void 0, void 0, function* () {
+            // The next line calls a function in a module that has not been updated to TS yet
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+            return yield database_1.default.getSortedSetRevRange(`uid:${uid}:posts`, start, stop);
+        });
+    };
+};</textarea>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>.</p>
+  </div>
+</footer>
+
+<script type="text/html" id="complexity-popover-template">
+  <div class="complexity-notice">
+    Complexity : {{ cyclomatic }} <br>
+    Length : {{ halstead.length }} <br>
+    Difficulty : {{ halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ halstead.bugs.toFixed(2) }}<br>
+  </div>
+</script>
+
+<script type="text/javascript" src="../../assets/scripts/bundles/core-bundle.js"></script>
+<script type="text/javascript" src="../../assets/scripts/bundles/codemirror.js"></script>
+<script type="text/javascript" src="../../assets/scripts/codemirror.markpopovertext.js"></script>
+<script type="text/javascript" src="report.js"></script>
+<script type="text/javascript" src="report.history.js"></script>
+<script type="text/javascript" src="../../assets/scripts/plato-file.js"></script>
+</body>
+</html>
