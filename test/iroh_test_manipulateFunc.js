@@ -1,5 +1,5 @@
 /* eslint-disable */
-// this file just used to demonstrate one use case of iroh
+// Demonstrates that Iroh can manipulate function returns
 const Iroh = require('iroh');
 
 function add(a, b) {

@@ -1,0 +1,6 @@
+When test/iroh_test_var.js is run, the following output is generated:
+
+[Running] node "/Users/meimeiwang/Desktop/school/CMU/Classes/17-313 Foundations of Software Engineering/Project 2/forked/spring23-nodebb-team-florida/test/iroh_test_var.js"
+foo => 42
+
+[Done] exited with code=0 in 0.654 seconds

@@ -1,5 +1,5 @@
 /* eslint-disable */
-// this file just used to demonstrate one use case of iroh
+// Demonstrates that Iroh can track code flow (if, loops)
 const Iroh = require('iroh');
 
 let code = `
