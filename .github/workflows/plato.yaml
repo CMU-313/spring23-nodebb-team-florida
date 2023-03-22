@@ -80,4 +80,4 @@ jobs:
           node app --setup="${SETUP}" --ci="${CI}"
 
       - name: Run Plato
-        run: npm run plato
+        run: npx plato -r -d report src
