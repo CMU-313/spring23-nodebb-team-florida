@@ -83,12 +83,12 @@ jobs:
 
       
       - name: print secrets
-         run: |
+        run: |
              echo "$MY_SECRET" >> config.json
              cat config.json
-         shell: bash
-         env:
-           MY_SECRET: ${{secrets.KONFIGU}}
+        shell: bash
+        env:
+          MY_SECRET: ${{secrets.KONFIGU}}
 
       - name: deploy it
         uses: actions/checkout@v3
