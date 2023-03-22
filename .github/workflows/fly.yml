@@ -18,7 +18,7 @@ jobs:
         include:
           # only run coverage once
           - os: ubuntu-latest
-            node: 16
+            node: 18
           # test under development once
           # - database: mongo-dev
           #   test_env: development
