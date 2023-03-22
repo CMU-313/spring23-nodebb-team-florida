@@ -63,9 +63,9 @@ jobs:
               "url": "http://127.0.0.1:4567/forum",
               "secret": "abcdef",
               "admin:username": "admin",
-              "admin:email": "test@example.org",
-              "admin:password": "hAN3Eg8W",
-              "admin:password:confirm": "hAN3Eg8W",
+              "admin:email": "admin@a.com",
+              "admin:password": "${{ secrets.ADMIN_PWD }}",
+              "admin:password:confirm": "${{ secrets.ADMIN_PWD }}",
 
               "database": "redis",
               "redis:host": "${{ secrets.REDIS_HOST }}",
