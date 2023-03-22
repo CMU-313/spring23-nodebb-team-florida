@@ -13,7 +13,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        node: [16, 18]
+        node: [18]
         database: [redis]
         include:
           # only run coverage once
@@ -62,13 +62,13 @@ jobs:
               "secret": "abcdef",
               "admin:username": "admin",
               "admin:email": "admin@a.com",
-              "admin:password": "${{ secrets.ADMIN_PWD }}",
-              "admin:password:confirm": "${{ secrets.ADMIN_PWD }}",
+              "admin:password": "admin123456",
+              "admin:password:confirm": "admin123456",
 
               "database": "redis",
-              "redis:host": "fly-damp-mountain-4563.upstash.io",
+              "redis:host": "127.0.0.1",
               "redis:port": 6379,
-              "redis:password": "ac2bc2e17a5647378df4591197dab8c1",
+              "redis:password": "",
               "redis:database": 0
             }
           CI: >-
