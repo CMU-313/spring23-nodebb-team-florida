@@ -14,6 +14,7 @@ logs/
 *.ipr
 *.iws
 /coverage
+/report
 /build
 .eslintrc
 test/files
@@ -28,3 +29,4 @@ test/files
 /public/src/client/account/header.js
 /public/src/client/test.js
 themes/
+report/
