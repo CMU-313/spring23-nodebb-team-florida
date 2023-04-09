@@ -45,7 +45,11 @@ tags:
     description: Administrative calls
   - name: files
     description: File upload routes
+  - name: career
+    description: Career model prediction
 paths:
+  /career/register:
+    $ref: 'write/register.yaml'
   /ping:
     $ref: 'write/ping.yaml'
   /utilities/login:

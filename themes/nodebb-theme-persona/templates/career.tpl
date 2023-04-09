@@ -11,7 +11,6 @@
             Welcome to the careers page! This is a brand new feature added to allow 
             students to connect with various job recruiters.
         </p>
-        This page is still under development.
         <!-- IF (!accountType || (accountType == "instructor")) -->
             This page is only available for students and recruiters.
         <!-- ELSE -->
