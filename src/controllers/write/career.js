@@ -20,7 +20,7 @@ Career.register = async (req, res) => {
             num_past_internships: userData.num_past_internships,
         };
 
-        userCareerData.prediction = Math.round(Math.random()); 
+        userCareerData.prediction = Math.round(Math.random());
         // TODO: Change this line to
 
         await user.setCareerData(req.uid, userCareerData);
