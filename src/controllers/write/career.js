@@ -19,10 +19,26 @@ Career.register = async (req, res) => {
             num_programming_languages: userData.num_programming_languages,
             num_past_internships: userData.num_past_internships,
         };
-
-        userCareerData.prediction = Math.round(Math.random());
+        console.log(11111);
+        // userCareerData.prediction = Math.round(Math.random());
         // TODO: Change this line to
+        const response = await fetch("https://ml-micro.fly.dev/students/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(userCareerData),
+        });
+        
+        if (response.ok) {
+            const prediction = await response.json();
+            userCareerData.prediction = prediction.result;
+            console.log(prediction);
+        } else {
+            throw new Error(`Failed to fetch prediction: ${response.status}`);
+        }
 
+        
         await user.setCareerData(req.uid, userCareerData);
         db.sortedSetAdd('users:career', req.uid, req.uid);
         res.json({});
