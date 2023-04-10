@@ -18,19 +18,19 @@ post:
               example: M
             age:
               type: string
-              example: 20
+              example: '20'
             gpa:
               type: string
-              example: 4
+              example: '4'
             extra_curricular:
               type: string
-              example: Men’s Basketball
+              example: Men's Basketball
             num_programming_languages:
               type: string
-              example: 2
+              example: '2'
             num_past_internships:
               type: string
-              example: 2
+              example: '2'
             major:
               type: string
               example: Information Systems
