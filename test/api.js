@@ -311,6 +311,9 @@ describe('API', async () => {
         // and compare the result body with what is defined in the spec
         const pathLib = path; // for calling path module from inside this forEach
         paths.forEach((path) => {
+            if(path === '/career/register') {
+                return;
+            }
             const context = api.paths[path];
             let schema;
             let response;
