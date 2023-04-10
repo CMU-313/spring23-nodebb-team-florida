@@ -30,8 +30,7 @@ Career.register = async (req, res) => {
         });
         if (response.ok) {
             const prediction = await response.json();
-            userCareerData.prediction = prediction.result;
-            console.log(prediction);
+            userCareerData.prediction = prediction.good_employee;
         } else {
             throw new Error(`Failed to fetch prediction: ${response.status}`);
         }
