@@ -1,0 +1,48 @@
+post:
+  tags:
+    - register
+  summary: create a new topic
+  description: registration in the career page
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            student_id:
+              type: string
+              example: sid
+            gender:
+              type: string
+              example: M
+            age:
+              type: string
+              example: '20'
+            gpa:
+              type: string
+              example: '4'
+            extra_curricular:
+              type: string
+              example: Men's Basketball
+            num_programming_languages:
+              type: string
+              example: '2'
+            num_past_internships:
+              type: string
+              example: '2'
+            major:
+              type: string
+              example: Information Systems
+          required:
+            - cid
+            - title
+            - content
+  responses:
+    '200':
+      description: successfully registered
+      content:
+        application/json:
+          schema:
+            type: number
+            example: 1
